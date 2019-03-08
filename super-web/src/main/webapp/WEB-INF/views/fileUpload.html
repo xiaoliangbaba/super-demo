@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="div_addRecommendation">
+    <h1>添加热门推荐</h1>
+
+    <label>资源Id</label>
+    <input type="text" name="add_contentId" id="add_contentId" class="txtfield"/>
+
+    <label>类型</label><br/>
+    <select id="add_type">
+        <option value="video" id="option_video">视频</option>
+        <option value="news" id="option_news">新闻</option>
+        <option value="music" selected="selected">音乐</option>
+        <option value="lottery">彩票</option>
+        <option value="groupon">团购</option>
+        <option value="game">游戏</option>
+        <option value="travel">旅游</option>
+    </select>
+
+    <label>名称</label>
+    <input type="text" name="add_name" id="add_name" class="txtfield"/>
+
+    <label>描述</label>
+    <input type="text" name="add_description" id="add_description" class="txtfield"/>
+
+    <label>链接</label>
+    <input type="text" name="add_url" id="add_url" class="txtfield"/>
+
+    <label>推荐时间</label>
+    <input type="text" name="add_recommendDate" id="add_recommendDate" class="txtfield"/>
+
+    <label>上传图片</label>
+    <input id="f" type="file" name="f"/>
+
+    <input type="button" name="add_recommend" id="add_recommend" class="flatbtn-blu hidemodal" value="添加"/>
+</div>
+</body>
+<script src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    $("#add_recommend").click(function () {
+        var contentId = $("#add_contentId").val();
+        var type = $("#add_type").val();
+        var name = $("#add_name").val();
+        var poster = document.getElementById("f").files[0];
+        var description = $("#add_description").val();
+        var url = $("#add_url").val();
+        var recommendDate = $("#add_recommendDate").val();
+        var request =  "http://127.0.0.1:8080" + "/users/add-recommend";
+        var data = new FormData();
+        data.append("contentId", contentId);
+        data.append("type", type);
+        data.append("name", name);
+        data.append("poster", poster);
+        data.append("description", description);
+        data.append("url", url);
+        data.append("recommendDate", recommendDate);
+
+        $.ajax({
+            url: request,
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            timeout: 3000,
+            success: function (result) {
+                alert("添加成功，recommendId为" + result.recommendId);
+                location.href = "${recommend}/recommend";
+            },
+            error: function () {
+                alert("reqeust error");
+            }
+        });
+    });
+
+
+</script>
+</html>
